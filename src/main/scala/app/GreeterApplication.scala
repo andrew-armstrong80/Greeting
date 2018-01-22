@@ -7,7 +7,13 @@ import scala.io.StdIn
   */
 object GreeterApplication extends App {
 
-  def greet(name : String) : Unit = println(s"Hello $name")
+  def greet(name : String) : Unit = {
+    if (name == "Andy"){
+      println(s"You don't get a hello!")
+    } else {
+      println(s"Hello $name")
+    }
+  }
 
   val name = StdIn.readLine("What is your name? ")
 
