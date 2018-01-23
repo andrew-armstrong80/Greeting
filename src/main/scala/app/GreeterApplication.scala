@@ -2,10 +2,34 @@ package app
 
 import scala.io.StdIn
 
-/**
-  * Created by digital001832 on 22/01/18.
-  */
+class Person(name : String) {
+
+  def speak() : String = {
+    if (name == "Andy") {
+      "You don't get a hello!"
+    } else {
+      "Hello " + name
+    }
+  }
+}
+
+object Prompt {
+
+  def ask(message : String) : String = StdIn.readLine(message)
+}
+
 object GreeterApplication extends App {
+
+  val n = Prompt.ask("What is your name? ")
+
+  val p = new Person (n)
+
+  println(p.speak())
+
+
+
+
+
 
   def greet(name : String) : Unit = {
     if (name == "Andy"){
@@ -15,8 +39,8 @@ object GreeterApplication extends App {
     }
   }
 
-  val name = StdIn.readLine("What is your name? ")
+ // val name = StdIn.readLine("What is your name? ")
 
-  greet(name)
+  //greet(name)
 
 }
