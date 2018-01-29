@@ -1,14 +1,13 @@
 package scala.app
 
 import app.Models.{BankAccount, CashISASavingsAccount, Person, SavingsAccount}
+import app.views.Prompt
+
 import scala.io.StdIn
 
 
 
-object Prompt {
 
-  def ask(message : String) : String = StdIn.readLine(message)
-}
 
 object GreetingsApplication extends App {
 
