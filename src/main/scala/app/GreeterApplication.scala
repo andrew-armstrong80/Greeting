@@ -1,75 +1,82 @@
-package app
+package scala.app
 
 import scala.io.StdIn
 
 
-abstract class BankAccount(accountNumber : String, balance: Double) {
+abstract class BankAccount(accountNumber : String,
+                           val balance: Double) {
 
-  def withdraw(amount : Double) : BankAccount
-  def deposit(amount : Double) : BankAccount
+  def withdraw(amount: Double) : BankAccount
+
+  def deposit(amount: Double) : BankAccount
+
 }
 
-class SavingsAccount(accountNumber: String, balance : Double) extends BankAccount(accountNumber, balance) {
+class SavingsAccount(accountNumber: String,
+                     balance : Double) extends BankAccount(accountNumber,balance) {
 
-  override def withdraw(amount: Double): BankAccount = {
-    if ((balance - amount) < 0) {
-    println(s"You have insufficient funds")
-    this
-  } else {
-      val deducted = balance - amount
-      println(s"Balance after deductions: $deducted")
-      new SavingsAccount(accountNumber, deducted)
-    }
-  }
-  override def deposit(amount: Double):BankAccount = {
-  new SavingsAccount(accountNumber, balance + amount)
-  }
+  override def deposit(amount: Double): BankAccount = new SavingsAccount(accountNumber, balance + amount)
+
+  override def withdraw(amount: Double): BankAccount = new SavingsAccount(accountNumber, balance - amount)
+
 }
 
-class CashISAAccount(accountNumber: String, balance : Double) extends BankAccount(accountNumber, balance)  {
+class Person(name : String, age: Int, private val bankAccount: BankAccount) {
 
-  override def withdraw(amount: Double): BankAccount = {
-      println(s"You are not allowed to withdraw from this kind of account!!")
-      this
-  }
-  override def deposit(amount: Double):BankAccount = {
-    new CashISAAccount(accountNumber, balance + amount)
-  }
-}
+  def this(name : String, age : Int) = this (
+    name = name,
+    age = age,
+    bankAccount = new SavingsAccount ("123", 0.00))
 
-class Person(name : String, age : Int) {
+  def this(name : String) = this (
+    name = name,
+    age = 0,
+    bankAccount = new SavingsAccount ("123", 0.00))
 
-  private val years : String = if(age==1) "year" else "years"
+  def this (firstName : String,
+            lastName : String) = this(
+    name = s"$firstName $lastName",
+    age = 37,
+    bankAccount = new SavingsAccount("153434", 0.00)
+  )
+
+
+  private val years : String = if(age == 1) "year" else "years"
 
   def speak() : String = {
     if (name == "Andy") {
-      "You don't get a hello!"
+      "You don't get a hello."
     } else {
-      s"Hello $name, you are $age $years old."
+      s"Hello $name, you are $age $years old. \n You have ${bankAccount.balance} in your account"
     }
   }
-}
 
+}
 
 object Prompt {
 
   def ask(message : String) : String = StdIn.readLine(message)
+
 }
 
-object GreeterApplication extends App {
+object GreetingsApplication extends App {
+
 
   val savingsAccount = new SavingsAccount("12345", 100.00)
   val savingsPlus100 = savingsAccount.deposit(100.00)
 
-  val cashISAAccount = new CashISAAccount("6789", 200.00)
-  val cashISAAccount200 = cashISAAccount.deposit(200.00)
 
-  val name = Prompt.ask("What is your name? ")
-  val age = Prompt.ask("How old are you? ")
+  val name : String = Prompt.ask("What is your name? ")
+  val age : String = Prompt.ask("How old are you? ")
 
-  val p = new Person (name, age.toInt)
+  val p : Person = new Person(name, age.toInt)
+
+  val child = new Person("David")
+  val p2 = new Person("Andy", "Armstrong")
 
   println(p.speak())
+  println(child.speak())
+  println(p2.speak())
 
 
 }
