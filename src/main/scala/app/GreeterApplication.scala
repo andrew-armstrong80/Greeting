@@ -1,9 +1,7 @@
-package scala.app
+package app
 
-import app.Models.{BankAccount, CashISASavingsAccount, Person, SavingsAccount}
+import app.Models.{CashISASavingsAccount, Person, SavingsAccount}
 import app.views.Prompt
-
-import scala.io.StdIn
 
 
 
@@ -26,12 +24,10 @@ object GreetingsApplication extends App {
   val cashISA = new CashISASavingsAccount("123456", 0.00)
   val isaDeposited = cashISA.deposit(1000.00)
   val withdrawFromISA = isaDeposited.withdraw(200.00)
-  val personWithCashISA = new Person("Loyal customer", 56, withdrawFromISA)
+  val personWithCashISA = new Person("Loyal customer", 56, List(withdrawFromISA))
 
   val superAccount = new CashISASavingsAccount("123456", 0.00, depositThreshold = 1000.00).deposit(1000.00).withdraw(300.00)
-  val superPersonWithISA = new Person("Super Loyal customer", 56, superAccount)
-
-
+  val superPersonWithISA = new Person("Super Loyal customer", 56, List(superAccount))
 
 
   println(p.speak())
